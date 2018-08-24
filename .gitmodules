@@ -1,0 +1,3 @@
+[submodule "demo2/nixpkgs-channels"]
+	path = demo2/nixpkgs-channels
+	url = https://github.com/NixOS/nixpkgs-channels
