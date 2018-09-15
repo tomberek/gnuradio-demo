@@ -18,27 +18,6 @@ add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-std=c++11>)
 # the Free Software Foundation, Inc., 51 Franklin Street,
 # Boston, MA 02110-1301, USA.
 
-########################################################################
-# Include python install macros
-########################################################################
-include(GrPython)
-if(NOT PYTHONINTERP_FOUND)
-    return()
-endif()
-
-########################################################################
-# Install python sources
-########################################################################
-GR_PYTHON_INSTALL(
-    FILES
-    __init__.py
-    DESTINATION ${GR_PYTHON_DIR}/howto
+install(FILES
+    howto_gain.xml DESTINATION share/gnuradio/grc/blocks
 )
-
-########################################################################
-# Handle the unit tests
-########################################################################
-include(GrTest)
-
-set(GR_TEST_TARGET_DEPS gnuradio-howto)
-set(GR_TEST_PYTHON_DIRS ${CMAKE_BINARY_DIR}/swig)

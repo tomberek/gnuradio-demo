@@ -15,7 +15,6 @@ stdenv.mkDerivation rec {
   buildInputs = [
     cmake boost uhd makeWrapper gnuradio cppunit
   ] ++ stdenv.lib.optionals pythonSupport [ python swig ];
-  #propagatedBuildInputs = [ gnuradio ];
 
   postInstall = ''
     for prog in "$out"/bin/*; do

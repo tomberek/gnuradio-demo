@@ -19,5 +19,5 @@ add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-std=c++11>)
 # Boston, MA 02110-1301, USA.
 
 install(FILES
-    DESTINATION share/gnuradio/grc/blocks
+    howto_gain.xml DESTINATION share/gnuradio/grc/blocks
 )
