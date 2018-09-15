@@ -1,6 +1,7 @@
 let
   # nixpkgs = import ./nixpkgs.nix;
-  pkgs = import <nixpkgs> {
+  nixpkgs = <nixpkgs>;
+  pkgs = import nixpkgs {
     config = {};
     overlays = [
       (import ./overlay.nix)
