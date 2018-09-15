@@ -29,14 +29,11 @@ let
 
   jobs = rec {
 
-    tarball = 
-      pkgs.releaseTools.sourceTarball {
-        name = "gnuradio-example-src";
-        src = pkgs.gnuradio-example;
-      };
-
     gnuradio-ex = { system ? builtins.currentSystem }:
     (pkgs.callPackage ./demo3/gr-example/derivation.nix {});
+
+    gnuradio-ex-arm = { system ? builtins.currentSystem }:
+    (pkgs-arm.callPackage ./demo3/gr-example/derivation.nix {});
 
     gnuradio-example = { system ? builtins.currentSystem }:
       nixBuild (pkgs.callPackage ./demo3/gr-example/derivation.nix {}){};
