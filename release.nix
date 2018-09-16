@@ -2,16 +2,16 @@
 let
   pkgs_template = system: import nixpkgs {
 	overlays=[(import ./demo3/gr-example/overlay.nix)];
-    config={ inherit system;
-  };};
-
-  pkgs = pkgs_template "x86-linux";
-  pkgs-arm = pkgs_template "armv7l-linux";
+    config={};
+    inherit system;
+  };
 
   job_template = sys:
-           { system ? builtins.currentSystem }:
-           (pkgs_template sys).callPackage
-                 ./demo3/gr-example/derivation.nix {};
+     { system ? sys }:
+       (pkgs_template sys).gnuradio-example.overrideAttrs
+         (old: {
+           system = sys;
+         });
 
 in
   {
