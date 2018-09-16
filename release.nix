@@ -1,7 +1,10 @@
 { nixpkgs ? (import ./nixpkgs.nix) } :
 let
   pkgs_template = system: import nixpkgs {
-	overlays=[(import ./demo3/gr-example/overlay.nix)];
+    overlays=[
+      (import ./demo3/gr-example/overlay.nix)
+      (import ./orc.nix)
+    ];
     config={};
     inherit system;
   };
