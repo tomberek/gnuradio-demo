@@ -7,5 +7,10 @@ let
       (import ./overlays/gnuradio-oot.nix)
     ];
   };
-in
-  pkgs.gnuradio-example
+in with pkgs;
+
+  gnuradio-with-packages.override ({
+    extraPackages = [
+      gnuradio-example
+    ];
+  })

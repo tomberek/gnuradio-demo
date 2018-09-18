@@ -9,7 +9,7 @@ stdenv.mkDerivation rec {
   name = "gnuradio-example-${version}";
   version = "0.0.1";
 
-  src = ../../gr-example;
+  src = ../../demo3/gr-example;
 
   nativeBuildInputs = [ pkgconfig ];
   buildInputs = [

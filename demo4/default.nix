@@ -4,7 +4,7 @@
 {nixpkgs ? (import ./nixpkgs.nix), withPythonPath ? true, ...}:
 let
   pkgs = import nixpkgs {config ={}; overlays = [
-    (import ./gr-example/overlay.nix)
+    (import ../gr-example/overlay.nix)
   ];};
 
   gnuradio-with = with pkgs; gnuradio-with-packages.override ({

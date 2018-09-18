@@ -4,12 +4,12 @@ nix-store -q ../demo1/result --tree
 cd nixpkgs-channels
 git log
 cd ..
-NIX_PATH=nixpkgs=nixpkgs-channels nix show-derivation nixpkgs.gnuradio | less
+nix show-derivation ./result | less
 clear
-echo "nix build nixpkgs.gnuradio"
+echo "nix build"
 read -p "[Enter]" -s -N 1
-NIX_PATH=nixpkgs=nixpkgs-channels nix build nixpkgs.gnuradio
+nix build
 clear
 echo "nix-shell -p gnuradio"
 read -p "[Enter]" -s -N 1
-NIX_PATH=nixpkgs=nixpkgs-channels nix-shell -p gnuradio
+NIX_PATH=nixpkgs=nixpkgs-channels nix-shell default.nix -A old
