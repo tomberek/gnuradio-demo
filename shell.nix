@@ -4,7 +4,7 @@
 {nixpkgs ? (import ./nixpkgs.nix), withPythonPath ? true, ...}:
 let
   pkgs = import nixpkgs {config ={}; overlays = [
-    (import ./overlays/gnuradio-oot.nix)
+    (import ./overlays/overlay.nix)
   ];};
 in
 with pkgs.python27Packages;

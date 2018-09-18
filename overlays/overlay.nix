@@ -1,6 +1,6 @@
 self: super:
 rec {
-  gnuradio-example = self.callPackage ./pkgs/gnuradio-example.nix {};
+  gnuradio-example = self.callPackage ./gnuradio-example.nix {};
 
   python-with-gnuradio = self.python.withPackages (ps : [ps.numpy ps.line_profiler pygnuradio ]);
   pygnuradio = super.pythonPackages.buildPythonPackage rec {

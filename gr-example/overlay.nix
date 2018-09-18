@@ -8,7 +8,7 @@ rec {
   };
   pyexample = super.pythonPackages.buildPythonPackage rec {
     preferLocalBuild = true;
-    name = "pygnuradio";
+    name = "pyexample";
     src = gnuradio-example;
     doCheck = false;
     format = "other";
