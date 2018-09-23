@@ -14,52 +14,40 @@ let
       ];
   };
 
-  /*
-  toPythonModule (pkgs.opencv.override {
-      enablePython = true;
-        pythonPackages = self;
-      });
-  gnuradio = with pkgs.pythonPackages; toPythonModule (gnuradio_pre.overrideAttrs (old: {
-    enablePython = true;
-    #pythonPackages = ;
-  }));
-      */
+  gnuradio-wrap = { stdenv, gnuradio, makeWrapper, python, extraPackages ? [] }:
 
+    with { inherit (stdenv.lib) appendToName makeSearchPath; };
 
-  gnuradio-wrap =
-{ stdenv, gnuradio, makeWrapper, python, extraPackages ? [] }:
+    stdenv.mkDerivation rec {
+      name = (appendToName "with-packages" gnuradio).name;
+      buildInputs = [ makeWrapper python ];
+      env = pkgs.buildEnv {
+        inherit name;
+        ignoreCollisions = true;
+        paths = let 
+          path_1 = builtins.map ( drv : pkgs.pythonPackages.toPythonModule drv ) ([gnuradio] ++ extraPackages);
+          path_2 = gnuradio.propagatedBuildInputs;
+          in path_1 ++ path_2;
+      };
 
-with { inherit (stdenv.lib) appendToName makeSearchPath; };
+                  #--prefix PYTHONPATH : ${stdenv.lib.concatStringsSep ":"
+                  #                         (map (path: "$(toPythonPath ${path})") extraPackages)} \
+    buildCommand = ''
+      mkdir -p $out/bin
+      ln -s "${gnuradio}"/bin/* $out/bin/
 
-stdenv.mkDerivation rec {
-  name = (appendToName "with-packages" gnuradio).name;
-  buildInputs = [ makeWrapper python ];
-  env = pkgs.buildEnv {
-	inherit name;
-    ignoreCollisions = true;
-    paths = let 
-      path_1 = builtins.map ( drv : pkgs.pythonPackages.toPythonModule drv ) ([gnuradio] ++ extraPackages);
-      path_2 = gnuradio.propagatedBuildInputs;
-      in path_1 ++ path_2;
+      for file in $(find -L $out/bin -type f ); do
+          if test -x "$(readlink -f "$file")"; then
+              wrapProgram "$file" \
+                  --prefix PYTHONPATH : "$(toPythonPath ${env})" \
+                  --prefix GRC_BLOCKS_PATH : ${makeSearchPath "share/gnuradio/grc/blocks" extraPackages}
+          fi
+      done
+    '';
+
+    inherit (gnuradio) meta;
   };
 
-                #--prefix PYTHONPATH : ${stdenv.lib.concatStringsSep ":"
-                #                         (map (path: "$(toPythonPath ${path})") extraPackages)} \
-  buildCommand = ''
-    mkdir -p $out/bin
-    ln -s "${gnuradio}"/bin/* $out/bin/
-
-    for file in $(find -L $out/bin -type f ); do
-        if test -x "$(readlink -f "$file")"; then
-            wrapProgram "$file" \
-			    --prefix PYTHONPATH : "$(toPythonPath ${env})" \
-                --prefix GRC_BLOCKS_PATH : ${makeSearchPath "share/gnuradio/grc/blocks" extraPackages}
-        fi
-    done
-  '';
-
-  inherit (gnuradio) meta;
-};
   gnuradio-wrap2 = pkgs.callPackage gnuradio-wrap {inherit gnuradio;};
   gnuradio-with-packages = gnuradio-wrap2.override {
     extraPackages = [
@@ -71,8 +59,7 @@ stdenv.mkDerivation rec {
   };
   gnuradio = pkgs.gnuradio.overrideAttrs (old: with pkgs; {
 
-    src = ./gnuradio;
-    src_2 = fetchFromGitHub {
+    src = fetchFromGitHub {
       owner = "gnuradio";
       repo = "gnuradio";
       rev = "d9c981e5137f04a0a226d7b29d5814ecf53b2df2";
@@ -139,3 +126,4 @@ stdenv.mkDerivation rec {
         
 in
 gnuradio-with-packages
+#pkgs.gnuradio-iio
