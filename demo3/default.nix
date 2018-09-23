@@ -1,4 +1,4 @@
-{nixpkgs ? (import ./nixpkgs.nix)}:
+{nixpkgs ? <nixpkgs> }:
 let
   pkgs = import nixpkgs {
     config ={};

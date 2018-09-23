@@ -1,7 +1,8 @@
 self: super:
 rec {
-  gnuradio-example = self.callPackage ./derivation.nix {};
+  gnuradio-example = self.pythonPackages.toPythonModule (self.callPackage ./derivation.nix {});
 
+  /*
   python-example = super.buildEnv {
     name = "python-example";
     paths = [pyexample pygnuradio];
@@ -39,4 +40,5 @@ rec {
       touch setup.py
     '';
   };
+  */
 }

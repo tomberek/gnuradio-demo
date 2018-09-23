@@ -1,6 +1,6 @@
 let
-  nixpkgs = import ./nixpkgs.nix;
-  # nixpkgs = <nixpkgs>;
+  #nixpkgs = import ./nixpkgs.nix;
+  nixpkgs = <nixpkgs>;
   pkgs = import nixpkgs {
     config = {};
     system = "armv7l-linux";
