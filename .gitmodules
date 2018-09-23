@@ -1,3 +1,12 @@
 [submodule "gr-iio"]
 	path = gr-iio
+	url = https://github.com/analogdevicesinc/gr-iio
+[submodule "demo7/libiio"]
+	path = demo7/libiio
 	url = https://github.com/analogdevicesinc/libiio
+[submodule "demo7/iio-oscilloscope"]
+	path = demo7/iio-oscilloscope
+	url = https://github.com/analogdevicesinc/iio-oscilloscope
+[submodule "demo7/libad9361-iio"]
+	path = demo7/libad9361-iio
+	url = https://github.com/analogdevicesinc/libad9361-iio
