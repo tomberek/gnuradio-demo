@@ -1,0 +1,3 @@
+[submodule "gr-iio"]
+	path = gr-iio
+	url = https://github.com/analogdevicesinc/libiio
