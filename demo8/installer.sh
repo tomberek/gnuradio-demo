@@ -62,40 +62,19 @@
 
   
   echo "Adding Cachix binary cache to Nix"
-
-
-  if [ "$os" = Darwin ];  then
-    echo "# added by Dapptools installer" | sudo tee -a /etc/nix/nix.conf
-    echo "substituters = https://cache.nixos.org https://dapp.cachix.org" | sudo tee -a /etc/nix/nix.conf
-    echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= dapp.cachix.org-1:9GJt9Ja8IQwR7YW/aF0QvCa6OmjGmsKoZIist0dG+Rs=" | sudo tee -a /etc/nix/nix.conf
-    echo "Relaunching nix-daemon"
-    sudo launchctl kickstart -k system/org.nixos.nix-daemon
-  else
-    mkdir -p "$HOME/.config/nix"
-    dest="$HOME/.config/nix/nix.conf"
-    echo "# added by Dapptools installer" | tee -a "$dest"
-    echo "substituters = https://cache.nixos.org https://dapp.cachix.org" | tee -a "$dest"
-    echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= dapp.cachix.org-1:9GJt9Ja8IQwR7YW/aF0QvCa6OmjGmsKoZIist0dG+Rs=" | tee -a "$dest"
-  fi
-
-  dest="$HOME/.dapp/"
-
-  if [ ! -d "$dest/dapptools" ]; then
-    echo "Downloading dapptools..."
-    mkdir -p "$dest"
-    cd "$dest"
-    git clone https://github.com/dapphub/dapptools --recursive --quiet
-  fi
-
-  cd "$dest/dapptools" || {
-    oops "could not download dapptools!"
+  { have cachix; } || { 
+      nix-env -iA nixpkgs.cachix
   }
 
-  git submodule update --init --remote --quiet
-  git pull --quiet
+  read -p "Cachix <name> to use: (e.g. arm)" CACHIX_URL
+  cachix use $CACHIX_URL
 
-  echo "Installing dapptools..."
-  nix-env -Q -f . -iA dapp seth solc hevm ethsign >/dev/null 2>/dev/null
+  nix-store --add ./gnuradio-with-packages-3.7.13.3.drv
+
+  INSTALL_APPS="gnuradio"
+  echo "Installing gnuradio..."
+
+  nix-env -iA $INSTALL_APPS
 
   # Finished!
   if [ "$os" = Darwin ];  then
@@ -103,7 +82,7 @@
 
 Installation finished!
 
-You now have access to dapp, seth, solc, hevm and ethsign.
+You now have access to $INSTALL_APPS
 
 Please open a new terminal to start using dapptools!
 EOF
@@ -112,7 +91,7 @@ EOF
 
 Installation finished!
 
-You now have access to dapp, seth, solc, hevm and ethsign.
+You now have access to $INSTALL_APPS
 
 Please logout and log back in to start using dapptools, or run
 
