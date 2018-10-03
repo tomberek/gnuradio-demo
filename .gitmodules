@@ -1,6 +1,6 @@
 [submodule "gr-iio"]
 	path = gr-iio
-	url = https://github.com/analogdevicesinc/gr-iio
+	url = https://github.com/tomberek/gr-iio
 [submodule "demo7/libiio"]
 	path = demo7/libiio
 	url = https://github.com/analogdevicesinc/libiio
