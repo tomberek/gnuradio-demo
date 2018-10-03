@@ -9,8 +9,8 @@ let
     overlays =
       [
         (import  ../gr-example/overlay.nix)
-        (import  ../demo7/overlays/overlay.nix)
-        (import  ../gr-iio/overlay.nix)
+        # (import  ../demo7/overlays/overlay.nix)
+        # (import  ../gr-iio/overlay.nix)
       ];
   };
 
@@ -54,7 +54,7 @@ let
       (pkgs.gnuradio-example.overrideAttrs (old:{
         python=pkgs.python3;
       }))
-      pkgs.gnuradio-iio
+      #pkgs.gnuradio-iio
       ];
   };
   gnuradio = pkgs.gnuradio.overrideAttrs (old: with pkgs; {
